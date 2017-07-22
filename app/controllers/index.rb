@@ -3,22 +3,17 @@ get '/' do
   erb :'/decks/index'
 end
 
-before '/deck/:deck_id/card/*' do
- @cards = Card.where({:deck_id => params[:deck_id], :correct_guess => nil})
- @card = @cards.sample
-end
-
-get '/deck/:deck_id/card/:card_id' do
-  @cards = Card.where(params[:id])
-  @all_cards = Card.all
+get '/deck/:deck_id' do
+   @cards = Card.where({:deck_id => params[:deck_id], :correct_guess => nil})
+   @card = @cards.sample
   erb :'/decks/show'
 end
 
-post '/guess' do
-  p params
+post '/deck' do
   @guess = Guess.create({:guess => params[:form_guess], :card_id => params[:card_id]})
-  p @guess.first_correct?
-  p @guess.correct?
+  if @guess.ever_correct || @guess.first_time_correct
+    Card.find_by({id: @guess.card_id}).correct_guess = true
+  end
 
-  erb :'/decks/show'
+  redirect "/deck/#{params[:deck_id]}"
 end
