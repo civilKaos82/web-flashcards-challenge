@@ -1,0 +1,19 @@
+<h1>Flashcards</h1>
+
+<% if @card %>
+<%= @card.prompt %>
+
+<form method="post" action="/deck">
+  <label>Enter your guess:</label>
+  <input type="hidden" name="card_id" value="<%= @card.id %>"/>
+  <input type="hidden" name="deck_id" value="<%= @card.deck_id %>"/>
+  <input type="text" name="form_guess">
+  <br>
+
+  <input type="submit" value="submit your guess">
+</form>
+
+<% else %>
+<h3>Results: </h3>
+
+<% end %>

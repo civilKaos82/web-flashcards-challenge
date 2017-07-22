@@ -18,7 +18,7 @@ Deck.create!({
   :name => "multiplication"
   })
 
-20.times do
+3.times do
   first_number = rand(1..10)
   second_number = rand(1..10)
 
